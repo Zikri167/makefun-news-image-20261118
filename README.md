@@ -1,29 +1,53 @@
-# News Image — 18 November 2026
+# The World in One Page — 18 November 2026 (v2)
 
-One image that sums up the world's news of Wednesday 18 November 2026,
-entered in the make.fun competition `news-image-20261118`.
+A one-page newspaper front page summarising the eight stories that
+defined Wednesday 18 November 2026, drawn entirely with Pillow.
 
-The front page covers six stories from that day: the United States striking
-an Iranian missile site on Qeshm Island and Iran's drone attacks on Bahrain
-and Kuwait; Ukraine's strike partly collapsing the Kerch bridge to Crimea;
-Xi Jinping hosting Vladimir Putin in Shenzhen ahead of the first
-Trump-Xi-Putin trilateral summit; Mary Peltola winning Alaska's Senate seat
-as Democrats reach 56 seats; the Ebola outbreak in DR Congo passing 11,000
-cases; and Category 5 Cyclone Xavier striking the Northern Cook Islands.
+## The eight stories
 
-## How it works
+1. **Gulf strikes (lead)** — U.S. jets hit a Revolutionary Guard
+   missile launch site on Qeshm Island; Iran fires drones at Bahrain
+   and Kuwait.
+2. **Kerch Bridge** — Ukrainian drones and missiles partly collapse
+   the bridge to Crimea; one arch falls into the strait.
+3. **Shenzhen summit** — Xi hosts Putin ahead of Thursday's first
+   Trump–Xi–Putin trilateral.
+4. **Alaska** — Democrat Mary Peltola wins the Senate seat; Democrats
+   reach a 56-seat majority.
+5. **Ebola in DR Congo** — the outbreak passes 11,000 cases and
+   5,400 deaths.
+6. **Cyclone Xavier** — a Category 5 storm slams the Northern Cook
+   Islands.
+7. **Also today** — the U.S. loses measles-free status after 26 years
+   (5,400+ cases).
+8. **Also today** — a Russian military plane crashes in Siberia,
+   19 dead.
 
-`entry.png` is the front page itself (1024x1024 PNG, drawn with PIL from
-the verified wire reports of the day). `main.py` is the entry program: using
-only the Python standard library, it reads `entry.png` next to it, checks
-that the file is a whole PNG or JPEG within the size and dimension limits,
-and writes the bytes unchanged to `entry.png` in the output directory
-(`MAKEFUN_OUTPUT_DIR`, or `/output` when unset).
+## Layout (v2 vs v1)
 
-Run it locally with:
+v1 carried six stories in three rows with a small lead illustration.
+v2 adds two more verified stories in an "ALSO TODAY" strip, enlarges
+the lead explosion illustration (layered burst, smoke rings, four
+drones over Qeshm Island), redraws the Kerch Bridge as a proper side
+view (intact arch, broken deck segment falling into the strait with a
+splash), and redraws the Shenzhen skyline with the red sun disc
+behind the towers and the Chinese, Russian and U.S. flags. Type is
+larger throughout and the bottom-row icons sit beside the section
+kickers instead of crowding the text.
+
+## How it is built
+
+`draw_frontpage.py` (build-time only, not part of the entry) draws
+`entry.png` (1024x1024, ~131 KB) with Pillow: paper `#f7f3ea`,
+ink `#111111`, red `#b91c1c`, navy `#1e3a5f`. It is deterministic —
+two runs produce byte-identical output. The entry program `main.py`
+(standard library only) validates the image (PNG, at most 1 MiB, at
+most 1024x1024) and copies it to `$MAKEFUN_OUTPUT_DIR/entry.png`
+(or `/output/entry.png`).
+
+## Run
 
 ```sh
-mkdir -p out && MAKEFUN_OUTPUT_DIR=out python3 main.py
+python3 draw_frontpage.py   # regenerates entry.png (build time)
+python3 main.py             # writes entry.png to the output dir
 ```
-
-The program runs with no network and writes the same bytes on every run.
