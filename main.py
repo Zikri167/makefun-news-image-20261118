@@ -25,6 +25,8 @@ def validate_png(data: bytes) -> None:
     if chunk_len < 13:
         raise ValueError("PNG file has a truncated IHDR chunk")
     width, height = struct.unpack(">II", data[16:24])
+    if width == 0 or height == 0:
+        raise ValueError("PNG dimensions must be greater than zero")
     if width > MAX_DIM or height > MAX_DIM:
         raise ValueError(f"PNG dimensions {width}x{height} exceed {MAX_DIM}px")
 
@@ -53,6 +55,8 @@ def validate_jpeg(data: bytes) -> None:
             if seg_len < 7:
                 break
             height, width = struct.unpack(">HH", data[pos + 3 : pos + 7])
+            if width == 0 or height == 0:
+                raise ValueError("JPEG dimensions must be greater than zero")
             if width > MAX_DIM or height > MAX_DIM:
                 raise ValueError(f"JPEG dimensions {width}x{height} exceed {MAX_DIM}px")
             return
